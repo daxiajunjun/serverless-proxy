@@ -15,8 +15,6 @@ const bootstrap = async (module: any) => {
   const app = express();
   const nestApp = await NestFactory.create(module, new ExpressAdapter(app));
 
-  
-
   nestApp.setGlobalPrefix('/.netlify/functions/server');
   nestApp.enableCors();
   nestApp.use(helmet());
@@ -26,7 +24,7 @@ const bootstrap = async (module: any) => {
     }),
   );
   nestApp.use(
-    '/proxy_chat',
+    '/.netlify/functions/server/proxy_chat',
     proxy(proxyOpenAIHost, {
       proxyReqPathResolver: function (req) {
         return '/v1/chat/completions';
@@ -37,8 +35,11 @@ const bootstrap = async (module: any) => {
   nestApp.use(express.urlencoded({ limit: '50mb', extended: true }));
 
   await nestApp.init();
+  // nestApp.listen(3005);
   return app;
 };
+
+// bootstrap(AppModule);
 
 let cachedHadler: any;
 const proxyApi = async (module: any, event: any, context: any) => {
