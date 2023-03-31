@@ -25,7 +25,7 @@ const bootstrap = async (module: any) => {
       transform: true,
     }),
   );
-  app.use(
+  nestApp.use(
     '/proxy_chat',
     proxy(proxyOpenAIHost, {
       proxyReqPathResolver: function (req) {
