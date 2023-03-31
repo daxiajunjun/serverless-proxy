@@ -15,21 +15,22 @@ const bootstrap = async (module: any) => {
   const app = express();
   const nestApp = await NestFactory.create(module, new ExpressAdapter(app));
 
+  
+
+  nestApp.setGlobalPrefix('/.netlify/functions/server');
+  nestApp.enableCors();
+  nestApp.use(helmet());
+  nestApp.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+    }),
+  );
   app.use(
     '/proxy_chat',
     proxy(proxyOpenAIHost, {
       proxyReqPathResolver: function (req) {
         return '/v1/chat/completions';
       },
-    }),
-  );
-
-  // nestApp.setGlobalPrefix('/.netlify/functions/server');
-  nestApp.enableCors();
-  nestApp.use(helmet());
-  nestApp.useGlobalPipes(
-    new ValidationPipe({
-      transform: true,
     }),
   );
   nestApp.use(express.json({ limit: '50mb' }));
