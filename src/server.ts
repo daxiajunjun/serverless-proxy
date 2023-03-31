@@ -5,12 +5,26 @@ import * as express from 'express';
 import * as serverless from 'serverless-http';
 import * as helmet from 'helmet';
 import { AppModule } from './module';
+import * as proxy from 'express-http-proxy';
+
+function proxyOpenAIHost() {
+  return 'https://api.openai.com';
+}
 
 const bootstrap = async (module: any) => {
   const app = express();
   const nestApp = await NestFactory.create(module, new ExpressAdapter(app));
 
-  nestApp.setGlobalPrefix('/.netlify/functions/server');
+  app.use(
+    '/proxy_chat',
+    proxy(proxyOpenAIHost, {
+      proxyReqPathResolver: function (req) {
+        return '/v1/chat/completions';
+      },
+    }),
+  );
+
+  // nestApp.setGlobalPrefix('/.netlify/functions/server');
   nestApp.enableCors();
   nestApp.use(helmet());
   nestApp.useGlobalPipes(
