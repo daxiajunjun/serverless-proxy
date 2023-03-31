@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Query, Post } from '@nestjs/common';
 import { Response } from 'src/models/response.model';
 import { HashedBcryptReqDto } from './dtos/hashed-bcypt-req.dto';
 import { RandomsService } from './randoms.service';
@@ -7,7 +7,7 @@ import { RandomsService } from './randoms.service';
 export class RandomsController {
   constructor(private readonly randomsService: RandomsService) {}
 
-  @Get('string')
+  @Post('string')
   randomString(): Response {
     return this.randomsService.randomString();
   }
