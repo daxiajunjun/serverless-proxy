@@ -24,10 +24,15 @@ const bootstrap = async (module: any) => {
     }),
   );
   nestApp.use(
-    '/.netlify/functions/server/proxy_chat',
+    '/.netlify/functions/server/proxy_openai',
     proxy(proxyOpenAIHost, {
       proxyReqPathResolver: function (req) {
+        console.log('get request', new Date());
         return '/v1/chat/completions';
+      },
+      userResDecorator: function (proxyRes, proxyResData, userReq, userRes) {
+        console.log('response time', new Date());
+        return proxyResData;
       },
     }),
   );
@@ -47,6 +52,7 @@ const proxyApi = async (module: any, event: any, context: any) => {
     const app = await bootstrap(module);
     cachedHadler = serverless(app);
   }
+  console.log('function call', new Date());
 
   return cachedHadler(event, context);
 };

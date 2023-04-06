@@ -2,20 +2,23 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import * as express from 'express';
-import * as serverless from 'serverless-http';
 import * as helmet from 'helmet';
 import { AppModule } from './module';
 import * as proxy from 'express-http-proxy';
+import { Request } from 'express';
 
 function proxyOpenAIHost() {
   return 'https://api.openai.com';
+}
+
+function proxyAnyHost(req: Request) {
+  return req.query.url;
 }
 
 const bootstrap = async (module: any) => {
   const app = express();
   const nestApp = await NestFactory.create(module, new ExpressAdapter(app));
 
-  nestApp.setGlobalPrefix('/.netlify/functions/server');
   nestApp.enableCors();
   nestApp.use(helmet());
   nestApp.useGlobalPipes(
@@ -24,10 +27,22 @@ const bootstrap = async (module: any) => {
     }),
   );
   nestApp.use(
-    '/.netlify/functions/server/proxy_chat',
+    '/proxy_chat',
     proxy(proxyOpenAIHost, {
       proxyReqPathResolver: function (req) {
         return '/v1/chat/completions';
+      },
+    }),
+  );
+  nestApp.use(
+    '/proxy_any',
+    proxy(proxyAnyHost, {
+      proxyReqPathResolver: function (req) {
+        return '';
+      },
+      userResDecorator: function (proxyRes, proxyResData, userReq, userRes) {
+        console.log(new Date());
+        return proxyResData;
       },
     }),
   );
@@ -35,21 +50,8 @@ const bootstrap = async (module: any) => {
   nestApp.use(express.urlencoded({ limit: '50mb', extended: true }));
 
   await nestApp.init();
-  // nestApp.listen(3005);
+  nestApp.listen(3005);
   return app;
 };
 
-// bootstrap(AppModule);
-
-let cachedHadler: any;
-const proxyApi = async (module: any, event: any, context: any) => {
-  if (!cachedHadler) {
-    const app = await bootstrap(module);
-    cachedHadler = serverless(app);
-  }
-
-  return cachedHadler(event, context);
-};
-
-export const handler = async (event: any, context: any) =>
-  proxyApi(AppModule, event, context);
+bootstrap(AppModule);
