@@ -2,7 +2,6 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import * as express from 'express';
-import * as helmet from 'helmet';
 import { AppModule } from './module';
 import * as proxy from 'express-http-proxy';
 
@@ -15,7 +14,6 @@ const bootstrap = async (module: any) => {
   const nestApp = await NestFactory.create(module, new ExpressAdapter(app));
 
   nestApp.enableCors();
-  nestApp.use(helmet());
   nestApp.useGlobalPipes(
     new ValidationPipe({
       transform: true,
