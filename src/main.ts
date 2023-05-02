@@ -6,7 +6,7 @@ function proxyOpenAIHost() {
 }
 
 app.use(
-  '/proxy_openai',
+  '/proxy_openai/chat/completions',
   proxy(proxyOpenAIHost, {
     proxyReqPathResolver: function () {
       return '/v1/chat/completions';
