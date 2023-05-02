@@ -1,10 +1,13 @@
 const proxy = require('express-http-proxy');
 const app = require('express')();
+const cors = require('cors');
+const helmet = require('helmet');
 
 function proxyOpenAIHost() {
   return 'https://api.openai.com';
 }
-
+app.use(helmet());
+app.use(cors());
 app.use(
   '/proxy_openai/chat/completions',
   proxy(proxyOpenAIHost, {
@@ -19,3 +22,4 @@ app.use('/', (req, res) => {
 });
 
 app.listen(3005);
+console.log('server open');

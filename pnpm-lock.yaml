@@ -21,6 +21,7 @@ specifiers:
   bcrypt: ^5.0.1
   class-transformer: ^0.4.0
   class-validator: ^0.13.1
+  cors: ^2.8.5
   eslint: ^7.32.0
   eslint-config-airbnb-base: ^14.2.1
   eslint-config-prettier: ^8.3.0
@@ -53,6 +54,7 @@ dependencies:
   bcrypt: 5.1.0
   class-transformer: 0.4.0
   class-validator: 0.13.2
+  cors: 2.8.5
   express: 4.18.2
   express-http-proxy: 1.6.3
   helmet: 4.6.0
@@ -5741,7 +5743,7 @@ packages:
     resolution: {integrity: sha512-oWb1Z6mkHIskLzEJ/XWX0srkpkTQ7vaopMQkyaEIoq0fmtFVxOthb8cCxeT+p3ynTdkk/RZwbgG4brR5BeWECw==}
     engines: {node: '>= 4.0'}
     os: [darwin]
-    deprecated: fsevents 1 will break on node v14+ and could be using insecure binaries. Upgrade to fsevents 2.
+    deprecated: The v1 package contains DANGEROUS / INSECURE binaries. Upgrade to safe fsevents v2
     requiresBuild: true
     dependencies:
       bindings: 1.5.0
