@@ -39,9 +39,22 @@
 
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './module';
+import * as proxy from 'express-http-proxy';
+function proxyOpenAIHost() {
+  return 'https://api.openai.com';
+}
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors();
+  app.use(
+    '/proxy_openai',
+    proxy(proxyOpenAIHost, {
+      proxyReqPathResolver: function () {
+        return '/v1/chat/completions';
+      },
+    }),
+  );
   await app.listen(3000);
 }
 bootstrap();
