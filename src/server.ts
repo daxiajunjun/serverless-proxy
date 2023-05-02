@@ -26,11 +26,8 @@ const bootstrap = async (module: any) => {
   nestApp.use(
     '/.netlify/functions/server/proxy_openai',
     proxy(proxyOpenAIHost, {
-      proxyReqPathResolver: function (req) {
+      proxyReqPathResolver: function () {
         return '/v1/chat/completions';
-      },
-      userResDecorator: function (proxyRes, proxyResData, userReq, userRes) {
-        return proxyResData;
       },
     }),
   );

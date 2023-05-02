@@ -5,14 +5,9 @@ import * as express from 'express';
 import * as helmet from 'helmet';
 import { AppModule } from './module';
 import * as proxy from 'express-http-proxy';
-import { Request } from 'express';
 
 function proxyOpenAIHost() {
   return 'https://api.openai.com';
-}
-
-function proxyAnyHost(req: Request) {
-  return req.query.url;
 }
 
 const bootstrap = async (module: any) => {
@@ -27,22 +22,10 @@ const bootstrap = async (module: any) => {
     }),
   );
   nestApp.use(
-    '/proxy_chat',
+    '/proxy_openai',
     proxy(proxyOpenAIHost, {
-      proxyReqPathResolver: function (req) {
+      proxyReqPathResolver: function () {
         return '/v1/chat/completions';
-      },
-    }),
-  );
-  nestApp.use(
-    '/proxy_any',
-    proxy(proxyAnyHost, {
-      proxyReqPathResolver: function (req) {
-        return '';
-      },
-      userResDecorator: function (proxyRes, proxyResData, userReq, userRes) {
-        console.log(new Date());
-        return proxyResData;
       },
     }),
   );
