@@ -35,3 +35,5 @@ lerna-debug.log*
 !.vscode/extensions.json
 functions
 .netlify
+
+solitary-tooth-2086/node_modules

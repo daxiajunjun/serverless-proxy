@@ -1,0 +1,9 @@
+name = "solitary-tooth-2086"
+main = "src/index.ts"
+compatibility_date = "2023-05-22"
+usage_model = "bundled"
+node_compat = true
+env = { }
+
+[triggers]
+crons = [ ]
