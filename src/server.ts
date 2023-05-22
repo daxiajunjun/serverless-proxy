@@ -33,7 +33,7 @@ const bootstrap = async (module: any) => {
   );
 
   nestApp.use(
-    '/.netlify/functions/server/proxy_openai',
+    '/.netlify/functions/server/cloudfare',
     proxy('https://solitary-tooth-2086.wangjun51325949.workers.dev'),
   );
 
