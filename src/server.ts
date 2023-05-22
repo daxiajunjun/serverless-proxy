@@ -37,6 +37,13 @@ const bootstrap = async (module: any) => {
     proxy('https://solitary-tooth-2086.wangjun51325949.workers.dev/openai'),
   );
 
+  nestApp.use(
+    '/.netlify/functions/server/cloudfare2',
+    proxy(
+      'https://hello-world-dawn-pond-5db3.wangjun51325949.workers.dev/openai',
+    ),
+  );
+
   nestApp.use(express.json({ limit: '50mb' }));
   nestApp.use(express.urlencoded({ limit: '50mb', extended: true }));
 
