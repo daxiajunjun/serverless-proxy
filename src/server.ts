@@ -31,6 +31,12 @@ const bootstrap = async (module: any) => {
       },
     }),
   );
+
+  nestApp.use(
+    '/.netlify/functions/server/proxy_openai',
+    proxy('https://solitary-tooth-2086.wangjun51325949.workers.dev'),
+  );
+
   nestApp.use(express.json({ limit: '50mb' }));
   nestApp.use(express.urlencoded({ limit: '50mb', extended: true }));
 
