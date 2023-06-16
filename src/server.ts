@@ -45,7 +45,7 @@ const bootstrap = async (module: any) => {
   );
 
   nestApp.use(
-    '/proxy_any_host',
+    '/.netlify/functions/server/proxy_any_host',
     proxy((req) => req.query.host, {
       proxyReqPathResolver: function (req) {
         console.log(req._parsedUrl.path);
