@@ -44,6 +44,16 @@ const bootstrap = async (module: any) => {
     ),
   );
 
+  nestApp.use(
+    '/proxy_any_host',
+    proxy((req) => req.query.host, {
+      proxyReqPathResolver: function (req) {
+        console.log(req._parsedUrl.path);
+        return req._parsedUrl.path.replace(/host=[^&]+&?/, '');
+      },
+    }),
+  );
+
   nestApp.use(express.json({ limit: '50mb' }));
   nestApp.use(express.urlencoded({ limit: '50mb', extended: true }));
 
