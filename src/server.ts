@@ -34,15 +34,9 @@ const bootstrap = async (module: any) => {
 
   nestApp.use(
     '/.netlify/functions/server/cloudfare',
-    proxy('https://solitary-tooth-2086.wangjun51325949.workers.dev/openai'),
+    proxy('https://solitary-tooth-2086.wangjun51325949.workers.dev'),
   );
 
-  nestApp.use(
-    '/.netlify/functions/server/cloudfare2',
-    proxy(
-      'https://hello-world-dawn-pond-5db3.wangjun51325949.workers.dev/openai',
-    ),
-  );
 
   nestApp.use(
     '/.netlify/functions/server/proxy_any_host',

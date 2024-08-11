@@ -10,10 +10,10 @@ app.use(helmet());
 app.use(cors());
 app.use(
   '/proxy_any_host',
-  proxy((req) => req.query.host, {
+  proxy((req) => 'https://www.douyin.com', {
     proxyReqPathResolver: function (req) {
-      console.log(req._parsedUrl.path);
-      return req._parsedUrl.path.replace(/host=[^&]+&?/, '');
+      console.log(req.query, req._parsedUrl);
+      return req._parsedUrl.path;
     },
   }),
 );
